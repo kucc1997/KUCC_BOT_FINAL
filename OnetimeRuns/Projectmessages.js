@@ -67,7 +67,7 @@ client.on('ready', async (c) => {
     
     const channel = await client.channels.cache.get(process.env.ProjectroleChannel);
     if (!channel) return;
-    var welcomeMessage = `Below are the Open Source Project Currently Under the KUOSC(Kathmandu University Open Source Community), React for Access to the discussion channels for these projects.Repo access is decided by the KUOSC which you can apply for via these channels`;
+    var welcomeMessage = `Below are the Open Source Project Currently Under the KUOSC(Kathmandu University Open Source Community), React for Access to the discussion channels for these projects.`;
   
 
     
