@@ -38,7 +38,14 @@ module.exports = async (interaction) => {
         return;
     }
     if (interaction.commandName==='deletechannel'){
+        const modRole = interaction.guild.roles.cache.find(
+            (role) => role.name === process.env.Modrolename
+        );
+        const hasrole = interaction.member.roles.cache.has(modRole.id);
+        if(hasrole){
+
         closeTicketHandler(interaction)
+        }
         return;
     }
     if ( interaction.isButton()){
