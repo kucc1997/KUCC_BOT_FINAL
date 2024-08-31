@@ -33,8 +33,8 @@ function appendToCSV(filePath, data) {
 }
 module.exports = async (interaction) => {
     let roleemoji=''
-    const newrole = interaction.options.get('role_name').value;
-    const roleemojifull=interaction.options.get('role_emoji').value;
+    const newrole = interaction.options.get('project_name').value;
+    const roleemojifull=interaction.options.get('project_emoji').value;
     if(roleemojifull.includes(":")){
          customemoji=true
         roleemoji=roleemojifull.split(':')[1]
@@ -56,7 +56,7 @@ module.exports = async (interaction) => {
 
         // Create a category with the role name
         const category = await interaction.guild.channels.create({
-            name: newrole+" Community",
+            name: newrole+" Project Discussion Channel",
             type: ChannelType.GuildCategory,
             permissionOverwrites: [
                 {
@@ -70,25 +70,7 @@ module.exports = async (interaction) => {
             ],
         });
 
-        // Create a text channel under the new category
-        const notices = await interaction.guild.channels.create({
-            name: `📔Notices`,
-            type: ChannelType.GuildText,
-            parent: category.id,
-            permissionOverwrites: [
-                {
-                    id: interaction.guild.id,
-                    deny:PermissionFlagsBits.ViewChannel,
-                },
-                {
-                    id: newRole.id,
-                    allow:PermissionFlagsBits.ViewChannel,
-                },  {
-                    id: modRole.id,
-                    allow:PermissionFlagsBits.ViewChannel,
-                },
-            ],
-        });
+        
         const  generalchat= await interaction.guild.channels.create({
             name: `💬General Chat`,
             type: ChannelType.GuildText,
@@ -143,6 +125,44 @@ module.exports = async (interaction) => {
                 },
             ],
         });
+        // Create a text channel under the new category
+        const featurerequest = await interaction.guild.channels.create({
+            name: `🛠FeatureRequests`,
+            type: ChannelType.GuildText,
+            parent: category.id,
+            permissionOverwrites: [
+                {
+                    id: interaction.guild.id,
+                    deny:PermissionFlagsBits.ViewChannel,
+                },
+                {
+                    id: newRole.id,
+                    allow:PermissionFlagsBits.ViewChannel,
+                },  {
+                    id: modRole.id,
+                    allow:PermissionFlagsBits.ViewChannel,
+                },
+            ],
+        });
+        // Create a text channel under the new category
+        const bugreports = await interaction.guild.channels.create({
+            name: `🐞BugReports`,
+            type: ChannelType.GuildText,
+            parent: category.id,
+            permissionOverwrites: [
+                {
+                    id: interaction.guild.id,
+                    deny:PermissionFlagsBits.ViewChannel,
+                },
+                {
+                    id: newRole.id,
+                    allow:PermissionFlagsBits.ViewChannel,
+                },  {
+                    id: modRole.id,
+                    allow:PermissionFlagsBits.ViewChannel,
+                },
+            ],
+        });
 
         // Create a voice channel under the new category
         const voiceChannel = await interaction.guild.channels.create({
@@ -160,9 +180,9 @@ module.exports = async (interaction) => {
                 },
             ],
         });
-        const channel = interaction.guild.channels.cache.get(process.env.ReactRole);
+        const channel = interaction.guild.channels.cache.get(process.env.ProjectroleChannel);
 
-        const messageold = await channel.messages.fetch(process.env.RoleMessageId);
+        const messageold = await channel.messages.fetch(process.env.ProjectemessageId);
         if (customemoji) {
             try {
                 const emojis = await interaction.guild.emojis.fetch();
@@ -187,5 +207,5 @@ module.exports = async (interaction) => {
         }
       
 
-        appendToCSV("./csv/roles.csv",[roleemoji,newRole.id])
+        appendToCSV("./csv/projectroles.csv",[roleemoji,newRole.id])
     }

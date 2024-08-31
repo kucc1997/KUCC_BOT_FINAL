@@ -14,12 +14,12 @@ const {
     
 } = require("discord.js");
 
-const createchannels=require("./submodules/channelcreation.js")
+const projectchannels=require("./submodules/projectcreation.js")
 
 module.exports = async (interaction) => {
     try{
     //previlage check
-    const newrole = interaction.options.get('role_name').value;
+    const newrole = interaction.options.get('project_name').value;
     const modRole = interaction.guild.roles.cache.find(
         (role) => role.name === process.env.Modrolename
     );
@@ -47,7 +47,7 @@ module.exports = async (interaction) => {
     }
 
     //if not exists now create 
-        createchannels(interaction);
+        projectchannels(interaction);
 
         await interaction.reply({
             content: `Role ${newrole} and associated channels created successfully.`,

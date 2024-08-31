@@ -22,6 +22,31 @@ const commands = [
      
     ]
   },
+  {
+    name: 'createproject',
+    description: 'create a new role project with the needed channel(Admin Level Only)',
+    options:[
+      {
+        name:'project_name',
+        description:'name of the project',
+        type: ApplicationCommandOptionType.String,
+        required: true,
+      },
+      {
+        name: 'project_emoji',
+        description: 'emoji for the project',
+        type: ApplicationCommandOptionType.String,
+        required: true,
+      },
+     
+     
+    ]
+  },
+  {
+    name: 'deletechannel',
+    description: 'create a new role project with the needed channel(Admin Level Only)',
+    
+  },
   
 
 

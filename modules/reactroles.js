@@ -47,14 +47,17 @@ async function readCSVAndPopulateArrays(filePath) {
 require("dotenv").config();
 module.exports = async (client) => {
     const channel = client.channels.cache.get(process.env.ReactRole);
+    const projectchannel = client.channels.cache.get(process.env.ProjectroleChannel)
     const rolemessage = await channel.messages.fetch(process.env.RoleMessageId);
     const statusmessage = await channel.messages.fetch(process.env.StatusMessageId);
+    const projectmessage= await projectchannel.messages.fetch(process.env.ProjectemessageId)
 
     client.on('messageReactionAdd', async (reaction, user) => {
         if (user.bot) return; // Ignore reactions from bots
 
         const roles = await readCSVAndPopulateArrays("./csv/roles.csv");
         const statusroles=await readCSVAndPopulateArrays("./csv/status.csv")
+        const projectroles=await readCSVAndPopulateArrays("./csv/projectroles.csv")
 
         const { message, emoji } = reaction;
         const guild = message.guild;
@@ -74,6 +77,13 @@ module.exports = async (client) => {
                 }
             }
         }
+        if (message.id == projectmessage.id) { // Replace 'YOUR_MESSAGE_ID' with the actual message ID
+            for (let i = 0; i < projectroles.length; i++) {
+                if (emoji.name == projectroles[i].label) {
+                    await member.roles.add(projectroles[i].id);
+                }
+            }
+        }
     });
 
     client.on('messageReactionRemove', async (reaction, user) => {
@@ -81,6 +91,7 @@ module.exports = async (client) => {
     
         const roles = await readCSVAndPopulateArrays("./csv/roles.csv");
         const statusroles=await readCSVAndPopulateArrays("./csv/status.csv")
+        const projectroles=await readCSVAndPopulateArrays("./csv/projectroles.csv")
         const { message, emoji } = reaction;
         const guild = message.guild;
         const member = await guild.members.fetch(user.id);
@@ -89,6 +100,18 @@ module.exports = async (client) => {
             for (let i = 0; i < roles.length; i++) {
                 if (emoji.name === roles[i].label) {
                     const roleId = roles[i].id;
+                    const roleToRemove = guild.roles.cache.get(roleId);
+                    if (roleToRemove && member.roles.cache.has(roleId)) {
+                        await member.roles.remove(roleId);
+                        
+                    }
+                }
+            }
+        }
+        if (message.id === projectmessage.id) { // Replace 'rolemessage.id' with the actual message ID
+            for (let i = 0; i < projectroles.length; i++) {
+                if (emoji.name === projectroles[i].label) {
+                    const roleId = projectroles[i].id;
                     const roleToRemove = guild.roles.cache.get(roleId);
                     if (roleToRemove && member.roles.cache.has(roleId)) {
                         await member.roles.remove(roleId);
